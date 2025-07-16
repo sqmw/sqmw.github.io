@@ -1,0 +1,14 @@
+[
+  {
+    "name": "项目A",
+    "desc": "这是项目A的简介",
+    "url": "https://github.com/你的用户名/项目A",
+    "tags": ["前端", "工具"]
+  },
+  {
+    "name": "项目B",
+    "desc": "这是项目B的简介",
+    "url": "https://github.com/你的用户名/项目B",
+    "tags": ["后端", "API"]
+  }
+] 
