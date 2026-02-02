@@ -14,6 +14,7 @@ App.ui = (() => {
     els.sortSelect = document.getElementById('sort-select');
     els.viewGrid = document.getElementById('view-grid');
     els.viewList = document.getElementById('view-list');
+    els.refreshData = document.getElementById('refresh-data');
     els.languageFilters = document.getElementById('language-filters');
     els.resultCount = document.getElementById('result-count');
     els.activeFilters = document.getElementById('active-filters');

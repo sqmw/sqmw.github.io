@@ -15,17 +15,21 @@ App.main = (() => {
     App.ui.showLoading();
     App.controller.bindControls();
 
-    try {
-      const result = await App.data.loadRepos();
-      App.store.set({ projects: result.data });
-      App.controller.renderSidebars(result.data);
-      const languages = App.controller.getLanguages(result.data);
-      App.ui.renderLanguageFilters(languages, App.store.get().language);
-      App.controller.refresh();
-    } catch (error) {
-      console.error('Initial load failed:', error);
-      App.ui.showError(error.message);
-    }
+    const loadAndRender = async () => {
+      try {
+        const result = await App.data.loadRepos();
+        App.store.set({ projects: result.data });
+        App.controller.renderSidebars(result.data);
+        const languages = App.controller.getLanguages(result.data);
+        App.ui.renderLanguageFilters(languages, App.store.get().language);
+        App.controller.refresh();
+      } catch (error) {
+        console.error('Initial load failed:', error);
+        App.ui.showError(error.message);
+      }
+    };
+
+    await loadAndRender();
   };
 
   if (document.readyState === 'loading') {

@@ -130,6 +130,12 @@ App.controller = (() => {
       });
     }
 
+    if (els.refreshData) {
+      els.refreshData.addEventListener('click', async () => {
+        await reloadData();
+      });
+    }
+
     if (els.languageFilters) {
       els.languageFilters.addEventListener('click', (e) => {
         const target = e.target.closest('.chip');
@@ -172,11 +178,25 @@ App.controller = (() => {
     }
   };
 
+  const reloadData = async () => {
+    App.ui.showLoading();
+    try {
+      const result = await App.data.loadRepos();
+      App.store.set({ projects: result.data });
+      App.ui.renderLanguageFilters(getLanguages(result.data), App.store.get().language);
+      renderSidebars(result.data);
+      refresh();
+    } catch (error) {
+      console.error('Reload failed:', error);
+      App.ui.showError(error.message);
+    }
+  };
+
   const renderSidebars = (projects) => {
     App.ui.renderTopStars(projects);
     const trending = calculateTrending(projects);
     App.ui.renderTrending(projects, trending);
   };
 
-  return { refresh, bindControls, renderSidebars, getLanguages };
+  return { refresh, bindControls, renderSidebars, getLanguages, reloadData };
 })();

@@ -59,11 +59,15 @@ App.data = (() => {
   };
 
   const loadRepos = async () => {
-    const cached = getCache();
-    if (cached) return { data: restoreDates(cached), fromCache: true };
-    const data = await fetchRepos();
-    setCache(data);
-    return { data, fromCache: false };
+    try {
+      const data = await fetchRepos();
+      setCache(data);
+      return { data, fromCache: false };
+    } catch (err) {
+      const cached = getCache();
+      if (cached) return { data: restoreDates(cached), fromCache: true, error: err };
+      throw err;
+    }
   };
 
   return { loadRepos, setCache, getCache, normalizeRepos };
