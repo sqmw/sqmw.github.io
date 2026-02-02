@@ -19,6 +19,11 @@
   <meta property="og:url" content="https://sqmw.github.io">
 
   <link rel="canonical" href="https://sqmw.github.io">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 
@@ -46,6 +51,7 @@
 </head>
 
 <body>
+  <a class="skip-link i18n" data-i18n="skip_to_content" href="#main-content">跳到主要内容</a>
   <header>
     <div class="header-controls">
       <button id="theme-toggle" class="control-btn" aria-label="Toggle Theme">
@@ -62,13 +68,55 @@
   </header>
 
   <div class="container">
-    <main>
-      <div class="search-bar">
+    <main id="main-content">
+      <section class="toolbar" aria-label="项目工具栏">
+        <div class="search-bar">
         <i class="fas fa-search search-icon"></i>
+        <label class="sr-only i18n" data-i18n="search_label" for="search">搜索项目</label>
         <input type="text" id="search" class="i18n-placeholder" data-i18n-placeholder="search_placeholder"
           placeholder="搜索项目 (名称、描述、语言)...">
-      </div>
-      <ul id="project-list" class="grid-view"></ul>
+        <button id="search-clear" class="search-clear-btn" type="button" aria-label="Clear Search">
+          <i class="fas fa-times"></i>
+        </button>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="toolbar-group">
+            <button id="clear-filters" class="ghost-btn i18n" data-i18n="clear_filters" type="button">清除筛选</button>
+            <div class="select-wrap">
+              <label class="sr-only i18n" data-i18n="sort_label" for="sort-select">排序</label>
+              <select id="sort-select">
+                <option value="stars" class="i18n" data-i18n="sort_stars">按星标</option>
+                <option value="updated" class="i18n" data-i18n="sort_updated">按更新</option>
+                <option value="created" class="i18n" data-i18n="sort_created">按创建</option>
+                <option value="name" class="i18n" data-i18n="sort_name">按名称</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="toolbar-group">
+            <button id="view-grid" class="view-btn" data-view="grid" type="button">
+              <i class="fas fa-border-all"></i>
+              <span class="i18n" data-i18n="view_grid">网格</span>
+            </button>
+            <button id="view-list" class="view-btn" data-view="list" type="button">
+              <i class="fas fa-list"></i>
+              <span class="i18n" data-i18n="view_list">列表</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-row">
+          <div id="language-filters" class="chip-group" aria-label="语言筛选"></div>
+        </div>
+
+        <div class="result-meta" aria-live="polite">
+          <span id="result-count"></span>
+          <span id="active-filters" class="muted"></span>
+        </div>
+      </section>
+
+      <ul id="project-list" class="grid-view" aria-live="polite"></ul>
     </main>
 
     <aside class="sidebar">
@@ -93,10 +141,17 @@
           class="fab fa-github"></i> GitHub</a></p>
   </footer>
 
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear();
-  </script>
-  <script src="script.js"></script>
+  <button id="back-to-top" class="back-to-top i18n" data-i18n="back_to_top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+  <script src="state.js"></script>
+  <script src="data.js"></script>
+  <script src="ui.js"></script>
+  <script src="controls.js"></script>
+  <script src="main.js"></script>
   <script src="star-history.js"></script>
 </body>
 

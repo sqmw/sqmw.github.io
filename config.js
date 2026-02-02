@@ -1,0 +1,91 @@
+window.App = window.App || {};
+
+App.CONFIG = {
+  githubUser: 'sqmw',
+  excludedRepos: ['sqmw.github.io'],
+  cacheKey: 'repos_cache_v1',
+  cacheTTL: 6 * 60 * 60 * 1000,
+  snapshotKey: 'repo_stars_snapshot',
+  topLimit: 5,
+  languageLimit: 8
+};
+
+App.I18N = {
+  zh: {
+    header_desc: '✨ 欢迎来到我的项目主页！这里收录了我的主要项目，欢迎浏览和搜索。',
+    search_label: '搜索项目',
+    search_placeholder: '搜索项目 (名称、描述、语言)...',
+    hot_projects: '🔥 热门项目 (Top Stars)',
+    trending: '📈 趋势榜 (Trending)',
+    loading: '加载中...',
+    no_projects: '没有找到相关项目。',
+    error_tip: '请检查网络连接，或稍后刷新页面重试',
+    repo_desc: '暂无描述',
+    lang_others: '其他',
+    active: '活跃',
+    skip_to_content: '跳到主要内容',
+    clear_filters: '清除筛选',
+    sort_label: '排序',
+    sort_stars: '按星标',
+    sort_updated: '按更新',
+    sort_created: '按创建',
+    sort_name: '按名称',
+    view_grid: '网格',
+    view_list: '列表',
+    results_count: '共 {count} 个项目',
+    filters_active: '筛选: {filters}',
+    filter_all: '全部语言',
+    search_clear: '清空搜索',
+    back_to_top: '回到顶部',
+    updated_at: '更新 {date}',
+    star_history_title: 'Star 历史',
+    star_history_view: '在 star-history.com 查看详情',
+    star_history_no_data: '该项目暂无 star 历史数据 (或 star 数过少)'
+  },
+  en: {
+    header_desc: '✨ Welcome to my project portfolio! Browse and search my open source work.',
+    search_label: 'Search projects',
+    search_placeholder: 'Search projects (name, desc, language)...',
+    hot_projects: '🔥 Top Stars',
+    trending: '📈 Trending',
+    loading: 'Loading...',
+    no_projects: 'No projects found.',
+    error_tip: 'Check your connection or refresh later',
+    repo_desc: 'No description provided',
+    lang_others: 'Others',
+    active: 'Active',
+    skip_to_content: 'Skip to content',
+    clear_filters: 'Clear filters',
+    sort_label: 'Sort',
+    sort_stars: 'By stars',
+    sort_updated: 'By updated',
+    sort_created: 'By created',
+    sort_name: 'By name',
+    view_grid: 'Grid',
+    view_list: 'List',
+    results_count: '{count} projects',
+    filters_active: 'Filters: {filters}',
+    filter_all: 'All languages',
+    search_clear: 'Clear search',
+    back_to_top: 'Back to top',
+    updated_at: 'Updated {date}',
+    star_history_title: 'Star History',
+    star_history_view: 'View on star-history.com',
+    star_history_no_data: 'No star history data for this repo'
+  }
+};
+
+App.LANGUAGE_COLORS = {
+  JavaScript: '#f1e05a',
+  TypeScript: '#2b7489',
+  HTML: '#e34c26',
+  CSS: '#563d7c',
+  Python: '#3572A5',
+  Java: '#b07219',
+  'C++': '#f34b7d',
+  C: '#555555',
+  Dart: '#00B4AB',
+  Vue: '#41b883',
+  Shell: '#89e051',
+  Others: '#8e908c'
+};
