@@ -119,6 +119,26 @@ footer {
   background: #fff3cd;
 }
 
+/* 加载和错误状态 */
+#project-list .loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+#project-list .error {
+  text-align: center;
+  padding: 2rem;
+  color: #dc3545;
+}
+
+#project-list .error-tip {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
 /* 模态框样式 */
 .modal {
   position: fixed;

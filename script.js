@@ -1,40 +1,63 @@
 // GitHub 用户名
 const GITHUB_USERNAME = 'sqmw';
 
+// 显示加载状态
+function showLoading() {
+  const ul = document.getElementById('project-list');
+  if (ul) {
+    ul.innerHTML = '<li class="loading">⏳ 正在加载项目列表...</li>';
+  }
+}
+
+// 显示错误信息
+function showError(message) {
+  const ul = document.getElementById('project-list');
+  if (ul) {
+    ul.innerHTML = `
+      <li class="error">
+        <div>❌ ${message}</div>
+        <div class="error-tip">请检查网络连接，或稍后刷新页面重试</div>
+      </li>
+    `;
+  }
+}
+
 // 获取 GitHub 仓库列表
 async function fetchGitHubRepos() {
-  try {
-    const response = await fetch(
-      `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`
-    );
+  const response = await fetch(
+    `https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=updated&per_page=100`
+  );
 
-    if (!response.ok) {
-      throw new Error(`GitHub API 错误: ${response.status}`);
+  if (!response.ok) {
+    if (response.status === 403) {
+      throw new Error('GitHub API 请求次数超限，请稍后重试');
+    } else if (response.status === 404) {
+      throw new Error(`用户 ${GITHUB_USERNAME} 不存在`);
     }
-
-    const repos = await response.json();
-
-    return repos.map(repo => ({
-      name: repo.name,
-      desc: repo.description || '暂无描述',
-      url: repo.html_url,
-      tags: [
-        repo.language,
-        repo.fork ? 'Fork' : null,
-        repo.archived ? '已归档' : null,
-      ].filter(Boolean),
-      stars: repo.stargazers_count,
-      updated: repo.updated_at
-    }));
-  } catch (error) {
-    console.error('获取仓库失败:', error);
-    return [];
+    throw new Error(`GitHub API 错误: ${response.status}`);
   }
+
+  const repos = await response.json();
+
+  return repos.map(repo => ({
+    name: repo.name,
+    desc: repo.description || '暂无描述',
+    url: repo.html_url,
+    tags: [
+      repo.language,
+      repo.fork ? 'Fork' : null,
+      repo.archived ? '已归档' : null,
+    ].filter(Boolean),
+    stars: repo.stargazers_count,
+    updated: repo.updated_at
+  }));
 }
 
 // 渲染项目列表
 function renderProjects(list) {
   const ul = document.getElementById('project-list');
+  if (!ul) return;
+
   ul.innerHTML = '';
 
   if (list.length === 0) {
@@ -64,15 +87,21 @@ function renderProjects(list) {
   document.querySelectorAll('.stars.clickable').forEach(el => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const repoName = el.dataset.repo;
-      showStarModal(repoName);
+      if (typeof showStarModal === 'function') {
+        showStarModal(repoName);
+      }
     });
   });
 }
 
 // 搜索过滤
 function setupSearch(projects) {
-  document.getElementById('search').addEventListener('input', function () {
+  const searchInput = document.getElementById('search');
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', function () {
     const keyword = this.value.toLowerCase();
     const filtered = projects.filter(p =>
       p.name.toLowerCase().includes(keyword) ||
@@ -83,15 +112,27 @@ function setupSearch(projects) {
   });
 }
 
-// 初始化
+// 全局变量存储所有项目
 let allProjects = [];
 
-fetchGitHubRepos().then(projects => {
-  allProjects = projects;
+// 初始化函数
+async function init() {
+  showLoading();
 
-  // 记录今天的 star 数据
-  recordAllStars(projects);
+  try {
+    const projects = await fetchGitHubRepos();
+    allProjects = projects;
+    renderProjects(projects);
+    setupSearch(projects);
+  } catch (error) {
+    console.error('初始化失败:', error);
+    showError(error.message);
+  }
+}
 
-  renderProjects(projects);
-  setupSearch(projects);
-});
+// 确保 DOM 加载完成后再初始化
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
