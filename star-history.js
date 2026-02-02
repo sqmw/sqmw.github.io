@@ -1,9 +1,8 @@
 /**
  * Star History 模块
  * 使用 star-history.com 嵌入图表
+ * 注意：GITHUB_USERNAME 由 script.js 定义
  */
-
-const GITHUB_USERNAME = 'sqmw';
 
 // 生成 star-history.com 的图表 URL
 function getStarHistoryUrl(repoFullName, type = 'Date') {

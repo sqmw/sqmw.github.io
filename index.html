@@ -54,10 +54,13 @@
     <ul id="project-list"></ul>
   </section>
   <footer>
-    <p>© 2024 ksun22515 | <a href="https://github.com/sqmw" target="_blank">GitHub</a></p>
+    <p>© <span id="current-year"></span> ksun22515 | <a href="https://github.com/sqmw" target="_blank">GitHub</a></p>
   </footer>
-  <script src="star-history.js"></script>
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+  </script>
   <script src="script.js"></script>
+  <script src="star-history.js"></script>
 </body>
 
 </html>
