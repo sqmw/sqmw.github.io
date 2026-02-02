@@ -1,0 +1,5 @@
+# robots.txt for sqmw.github.io
+User-agent: *
+Allow: /
+
+Sitemap: https://sqmw.github.io/sitemap.xml

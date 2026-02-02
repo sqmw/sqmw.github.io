@@ -5,20 +5,23 @@ body {
   background: #f8f9fa;
   color: #222;
 }
+
 header {
   background: #343a40;
   color: #fff;
   padding: 2rem 1rem 1rem 1rem;
   text-align: center;
 }
+
 section {
   max-width: 700px;
   margin: 2rem auto;
   background: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   padding: 2rem 1.5rem;
 }
+
 #search {
   width: 100%;
   padding: 0.75rem;
@@ -28,41 +31,187 @@ section {
   margin-bottom: 1.5rem;
   box-sizing: border-box;
 }
+
 #project-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
+#project-list li a {
+  font-weight: bold;
+  color: #0366d6;
+  text-decoration: none;
+}
+
+#project-list li a:hover {
+  text-decoration: underline;
+}
+
+#project-list li .tags {
+  margin-left: 8px;
+  color: #888;
+  font-size: 0.9em;
+}
+
+#project-list li .stars {
+  margin-left: 8px;
+  color: #f0ad4e;
+  font-size: 0.9em;
+}
+
+#project-list li .desc {
+  margin-top: 4px;
+  color: #666;
+  font-size: 0.95em;
+}
+
 #project-list li {
   padding: 1rem 0;
   border-bottom: 1px solid #eee;
   display: flex;
   flex-direction: column;
 }
+
 #project-list li:last-child {
   border-bottom: none;
 }
+
 #project-list a {
   color: #007bff;
   font-weight: bold;
   text-decoration: none;
   font-size: 1.1rem;
 }
+
 #project-list a:hover {
   text-decoration: underline;
 }
+
 footer {
   text-align: center;
   color: #888;
   padding: 2rem 1rem 1rem 1rem;
   font-size: 0.95rem;
 }
+
 @media (max-width: 600px) {
   section {
     padding: 1rem 0.5rem;
   }
-  header, footer {
+
+  header,
+  footer {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
   }
-} 
+}
+
+/* Star 可点击样式 */
+#project-list li .stars.clickable {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+#project-list li .stars.clickable:hover {
+  background: #fff3cd;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 85vh;
+  overflow: auto;
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Star History 专用模态框 */
+.star-history-modal {
+  max-width: 900px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  cursor: pointer;
+  color: #888;
+  transition: color 0.2s;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* Star 图表容器 */
+.star-chart-container h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.chart-wrapper {
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid #eee;
+  text-align: center;
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.star-history-chart {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.chart-actions {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.view-full-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.view-full-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  color: #fff;
+}
+
+.no-data {
+  color: #888;
+  font-style: italic;
+  padding: 2rem;
+}
