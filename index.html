@@ -19,6 +19,7 @@
   <meta property="og:url" content="https://sqmw.github.io">
 
   <link rel="canonical" href="https://sqmw.github.io">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 
   <!-- 结构化数据 (JSON-LD) - 帮助搜索引擎理解网站 -->
@@ -46,16 +47,52 @@
 
 <body>
   <header>
-    <h1>ksun22515@gmail.com</h1>
-    <p>欢迎来到我的项目主页！这里收录了我的主要项目，欢迎浏览和搜索。</p>
+    <div class="header-controls">
+      <button id="theme-toggle" class="control-btn" aria-label="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+      <button id="lang-toggle" class="control-btn" aria-label="Toggle Language">
+        <span class="lang-text">EN</span>
+      </button>
+    </div>
+    <div class="header-content">
+      <h1>ksun22515<span class="highlight">@gmail.com</span></h1>
+      <p class="i18n" data-i18n="header_desc">✨ 欢迎来到我的项目主页！这里收录了我的主要项目，欢迎浏览和搜索。</p>
+    </div>
   </header>
-  <section>
-    <input type="text" id="search" placeholder="搜索项目...">
-    <ul id="project-list"></ul>
-  </section>
+
+  <div class="container">
+    <main>
+      <div class="search-bar">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search" class="i18n-placeholder" data-i18n-placeholder="search_placeholder"
+          placeholder="搜索项目 (名称、描述、语言)...">
+      </div>
+      <ul id="project-list" class="grid-view"></ul>
+    </main>
+
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3 class="i18n" data-i18n="hot_projects">🔥 热门项目 (Top Stars)</h3>
+        <ul id="top-stars-list" class="sidebar-list">
+          <li class="loading-mini i18n" data-i18n="loading">加载中...</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="i18n" data-i18n="trending">📈 趋势榜 (Trending)</h3>
+        <ul id="trending-list" class="sidebar-list">
+          <li class="loading-mini i18n" data-i18n="loading">加载中...</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+
   <footer>
-    <p>© <span id="current-year"></span> ksun22515 | <a href="https://github.com/sqmw" target="_blank">GitHub</a></p>
+    <p>© <span id="current-year"></span> ksun22515 | <a href="https://github.com/sqmw" target="_blank"><i
+          class="fab fa-github"></i> GitHub</a></p>
   </footer>
+
   <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>

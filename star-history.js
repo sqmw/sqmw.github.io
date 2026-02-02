@@ -36,14 +36,23 @@ function showStarModal(repoName) {
       <span class="close-btn">&times;</span>
       <div class="star-chart-container">
         <h3>⭐ ${repoName} Star History</h3>
+        
         <div class="chart-wrapper">
+          <!-- Loading Spinner -->
+          <div id="chart-loading" class="loading-spinner">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+          </div>
+          
           <img 
             src="${chartUrl}" 
             alt="${repoName} Star History Chart"
             class="star-history-chart"
-            onerror="this.onerror=null; this.parentElement.innerHTML='<p class=\\'no-data\\'>该项目暂无 star 历史数据</p>';"
+            style="display: none;" 
+            onload="document.getElementById('chart-loading').style.display='none'; this.style.display='block';"
+            onerror="document.getElementById('chart-loading').style.display='none'; this.parentElement.innerHTML='<p class=\\'no-data\\'>该项目暂无 star 历史数据 (或 star 数过少)</p>';"
           />
         </div>
+        
         <div class="chart-actions">
           <a href="${pageUrl}" target="_blank" class="view-full-btn">
             🔗 在 star-history.com 查看详情
