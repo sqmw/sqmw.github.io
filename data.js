@@ -3,6 +3,14 @@ window.App = window.App || {};
 App.data = (() => {
   const { githubUser, excludedRepos, cacheKey, cacheTTL } = App.CONFIG;
 
+  const restoreDates = (repos = []) => {
+    return repos.map((repo) => ({
+      ...repo,
+      updated: new Date(repo.updated),
+      created: new Date(repo.created)
+    }));
+  };
+
   const getCache = () => {
     try {
       const cached = JSON.parse(localStorage.getItem(cacheKey));
@@ -52,7 +60,7 @@ App.data = (() => {
 
   const loadRepos = async () => {
     const cached = getCache();
-    if (cached) return { data: cached, fromCache: true };
+    if (cached) return { data: restoreDates(cached), fromCache: true };
     const data = await fetchRepos();
     setCache(data);
     return { data, fromCache: false };
