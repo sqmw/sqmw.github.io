@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Release Stats - ksun22515</title>
+
+  <meta name="description" content="查看 GitHub 项目的 Release 下载统计信息">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <header>
+    <div class="header-controls">
+      <a href="index.html" class="control-btn" aria-label="Back to Home">
+        <i class="fas fa-home"></i>
+      </a>
+      <button id="theme-toggle" class="control-btn" aria-label="Toggle Theme">
+        <i class="fas fa-moon"></i>
+      </button>
+    </div>
+    <div class="header-content">
+      <h1>Release Stats</h1>
+      <p id="repo-subtitle">GitHub Release Download Statistics</p>
+    </div>
+  </header>
+
+  <div class="container stats-container">
+    <main id="main-content">
+      
+      <!-- Search/Input Form -->
+      <section id="stats-search" class="toolbar">
+        <form id="stats-form" class="stats-form">
+            <div class="form-group">
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" id="username" placeholder="Username (e.g. sqmw)" required>
+            </div>
+            <div class="form-group">
+                <label for="repository" class="sr-only">Repository</label>
+                <input type="text" id="repository" placeholder="Repository (e.g. desk_tidy)" required>
+            </div>
+            <button type="submit" class="view-btn active">
+                <i class="fas fa-chart-bar"></i> Get Stats
+            </button>
+        </form>
+      </section>
+
+      <!-- Loading State -->
+      <div id="loading" class="loading-spinner" style="display: none;">
+        <i class="fas fa-circle-notch fa-spin"></i> Loading data...
+      </div>
+
+      <!-- Error State -->
+      <div id="error-msg" class="error-message" style="display: none;"></div>
+
+      <!-- Stats Content -->
+      <div id="stats-content" style="display: none;">
+        
+        <!-- Summary Cards -->
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3><i class="fas fa-download"></i> Total Downloads</h3>
+                <div class="summary-value" id="total-downloads">0</div>
+            </div>
+            <div class="summary-card">
+                <h3><i class="fas fa-tag"></i> Latest Release</h3>
+                <div class="summary-value small" id="latest-version">-</div>
+            </div>
+            <div class="summary-card">
+                <h3><i class="fas fa-box-open"></i> Total Releases</h3>
+                <div class="summary-value" id="total-releases">0</div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Downloads by Release</h3>
+                <div class="chart-wrapper">
+                    <canvas id="downloadsChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Table -->
+        <div class="toolbar">
+            <div class="toolbar-header">
+                <h3><i class="fas fa-list"></i> Detailed Statistics</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Release / Tag</th>
+                            <th>Date</th>
+                            <th>Assets</th>
+                            <th>Downloads</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-table-body">
+                        <!-- Rows injected by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <footer>
+    <p>© <span id="current-year"></span> ksun22515 | <a href="https://github.com/sqmw" target="_blank"><i
+          class="fab fa-github"></i> GitHub</a></p>
+  </footer>
+
+  <!-- Reusing basic utils but main logic in stats.js -->
+  <script src="utils.js"></script> 
+  <script src="stats.js"></script>
+</body>
+
+</html>

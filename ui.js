@@ -127,6 +127,9 @@ App.ui = (() => {
                 ${App.utils.escapeHTML(proj.language)}
               </span>
               <span class="muted">${updated}</span>
+              <a href="stats.html?username=${App.CONFIG.githubUser}&repository=${App.utils.escapeHTML(proj.name)}" class="stats-icon" title="${App.utils.t('view_stats') || 'View Release Stats'}">
+                <i class="fas fa-chart-simple"></i>
+              </a>
               <span class="star-count clickable" data-repo="${App.utils.escapeHTML(proj.name)}" title="Click to view Star History">
                 <i class="fas fa-star" style="color: var(--accent-warm);"></i> ${proj.stars}
                 <i class="fas fa-chart-line star-action-icon"></i>
