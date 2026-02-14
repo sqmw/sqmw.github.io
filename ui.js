@@ -122,10 +122,11 @@ App.ui = (() => {
 
           <div class="card-footer">
             <div class="project-meta">
+              ${proj.language ? `
               <span class="language-tag">
                 <span class="lang-color" style="background-color: ${langColor}"></span>
                 ${App.utils.escapeHTML(proj.language)}
-              </span>
+              </span>` : ''}
               <span class="muted">${updated}</span>
               <a href="stats.html?username=${App.CONFIG.githubUser}&repository=${App.utils.escapeHTML(proj.name)}" class="stats-icon" title="${App.utils.t('view_stats') || 'View Release Stats'}">
                 <i class="fas fa-chart-simple"></i>

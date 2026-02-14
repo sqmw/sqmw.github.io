@@ -42,7 +42,7 @@ App.controller = (() => {
       const matchesQuery = !keyword
         || p.name.toLowerCase().includes(keyword)
         || (p.desc && p.desc.toLowerCase().includes(keyword))
-        || p.language.toLowerCase().includes(keyword);
+        || (p.language && p.language.toLowerCase().includes(keyword));
       const matchesLang = state.language === 'all' || p.language === state.language;
       return matchesQuery && matchesLang;
     });
@@ -61,6 +61,7 @@ App.controller = (() => {
 
   const getLanguages = (projects) => {
     const counts = projects.reduce((acc, p) => {
+      if (!p.language) return acc;
       acc[p.language] = (acc[p.language] || 0) + 1;
       return acc;
     }, {});

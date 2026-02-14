@@ -34,7 +34,7 @@ App.data = (() => {
         name: repo.name,
         desc: repo.description,
         url: repo.html_url,
-        language: repo.language || 'Others',
+        language: repo.language,
         tags: [repo.fork ? 'Fork' : null, repo.archived ? 'Archived' : null].filter(Boolean),
         stars: repo.stargazers_count,
         updated: new Date(repo.updated_at),
@@ -55,7 +55,26 @@ App.data = (() => {
     }
 
     const repos = await response.json();
-    return normalizeRepos(repos);
+
+    // Enrich forks with missing language
+    const enrichedRepos = await Promise.all(repos.map(async (repo) => {
+      if (repo.fork && !repo.language) {
+        try {
+          const detailResponse = await fetch(repo.url);
+          if (detailResponse.ok) {
+            const detail = await detailResponse.json();
+            if (detail.parent && detail.parent.language) {
+              return { ...repo, language: detail.parent.language };
+            }
+          }
+        } catch (e) {
+          console.warn(`Failed to fetch parent details for ${repo.name}`, e);
+        }
+      }
+      return repo;
+    }));
+
+    return normalizeRepos(enrichedRepos);
   };
 
   const loadRepos = async () => {

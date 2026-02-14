@@ -118,7 +118,7 @@ App.stats = (() => {
                     updated: asset.updated_at
                 };
             });
-            
+
             totalDownloads += releaseDownloads;
             releaseStats.push({
                 name: release.name || release.tag_name,
@@ -142,7 +142,7 @@ App.stats = (() => {
 
     const renderCharts = (data) => {
         const ctx = document.getElementById('downloadsChart').getContext('2d');
-        
+
         // Prepare data: reverse to show oldest to newest left to right if desired, 
         // or just top 10 recent. Let's do all releases, newest first (standard array order).
         // Actually charts are often better oldest -> newest.
@@ -207,15 +207,14 @@ App.stats = (() => {
         els.tableBody.innerHTML = '';
         data.forEach(release => {
             const tr = document.createElement('tr');
-            
+
             const dateStr = release.date.toLocaleDateString();
-            
+
             let assetsHtml = '<ul class="asset-list">';
             release.assets.forEach(asset => {
                 assetsHtml += `
                     <li>
                         <span class="asset-name">${asset.name}</span>
-                        <span class="asset-count">${asset.downloads.toLocaleString()}</span>
                     </li>
                 `;
             });
