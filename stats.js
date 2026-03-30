@@ -3,6 +3,24 @@
 window.App = window.App || {};
 
 App.stats = (() => {
+    const PLATFORM_CONFIG = [
+        {
+            key: 'windows',
+            label: 'Windows',
+            matcher: /(?:^|[^a-z])(win(?:dows)?|msi|exe)(?:[^a-z]|$)|x64|x86|amd64/i
+        },
+        {
+            key: 'macos',
+            label: 'macOS',
+            matcher: /(?:^|[^a-z])(mac(?:os)?|osx|darwin|dmg|pkg)(?:[^a-z]|$)|arm64|universal/i
+        },
+        {
+            key: 'linux',
+            label: 'Linux',
+            matcher: /(?:^|[^a-z])(linux|appimage|deb|rpm|snap|apk)(?:[^a-z]|$)/i
+        }
+    ];
+
     const els = {
         form: document.getElementById('stats-form'),
         username: document.getElementById('username'),
@@ -20,6 +38,34 @@ App.stats = (() => {
     };
 
     let charts = {};
+
+    const getPlatformMeta = (assetName) => {
+        const normalized = String(assetName || '').toLowerCase();
+        return PLATFORM_CONFIG.find((platform) => platform.matcher.test(normalized)) || {
+            key: 'other',
+            label: 'Other'
+        };
+    };
+
+    const aggregatePlatformDownloads = (assets) => {
+        const platformMap = new Map();
+
+        assets.forEach((asset) => {
+            const platform = getPlatformMeta(asset.name);
+            const current = platformMap.get(platform.key) || {
+                key: platform.key,
+                label: platform.label,
+                downloads: 0,
+                assets: []
+            };
+
+            current.downloads += asset.downloads;
+            current.assets.push(asset.name);
+            platformMap.set(platform.key, current);
+        });
+
+        return Array.from(platformMap.values()).sort((left, right) => right.downloads - left.downloads);
+    };
 
     const init = () => {
         // Theme init
@@ -118,6 +164,7 @@ App.stats = (() => {
                     updated: asset.updated_at
                 };
             });
+            const platformDownloads = aggregatePlatformDownloads(assets);
 
             totalDownloads += releaseDownloads;
             releaseStats.push({
@@ -125,6 +172,7 @@ App.stats = (() => {
                 tag: release.tag_name,
                 date: new Date(release.published_at),
                 downloads: releaseDownloads,
+                platformDownloads: platformDownloads,
                 assets: assets,
                 url: release.html_url
             });
@@ -209,27 +257,48 @@ App.stats = (() => {
             const tr = document.createElement('tr');
 
             const dateStr = release.date.toLocaleDateString();
+            const releaseName = App.utils.escapeHTML(release.name);
+            const releaseTag = App.utils.escapeHTML(release.tag);
+            const releaseUrl = App.utils.escapeHTML(release.url);
 
             let assetsHtml = '<ul class="asset-list">';
             release.assets.forEach(asset => {
+                const assetName = App.utils.escapeHTML(asset.name);
                 assetsHtml += `
                     <li>
-                        <span class="asset-name">${asset.name}</span>
+                        <span class="asset-name">${assetName}</span>
                     </li>
                 `;
             });
             assetsHtml += '</ul>';
 
+            let downloadsHtml = '<ul class="download-breakdown-list">';
+            release.platformDownloads.forEach((platform) => {
+                const platformLabel = App.utils.escapeHTML(platform.label);
+                downloadsHtml += `
+                    <li>
+                        <span class="download-platform">${platformLabel}</span>
+                        <span class="download-count">${platform.downloads.toLocaleString()}</span>
+                    </li>
+                `;
+            });
+            downloadsHtml += `
+                <li class="download-total-row">
+                    <span class="download-platform">Total</span>
+                    <span class="download-count">${release.downloads.toLocaleString()}</span>
+                </li>
+            </ul>`;
+
             tr.innerHTML = `
-                <td>
+                <td class="stats-col-release">
                     <div class="release-name">
-                        <a href="${release.url}" target="_blank">${release.name}</a>
+                        <a href="${releaseUrl}" target="_blank" rel="noopener noreferrer">${releaseName}</a>
                     </div>
-                    <div class="release-tag"><i class="fas fa-tag"></i> ${release.tag}</div>
+                    <div class="release-tag"><i class="fas fa-tag"></i> ${releaseTag}</div>
                 </td>
-                <td class="whitespace-nowrap">${dateStr}</td>
-                <td>${assetsHtml}</td>
-                <td class="text-bold">${release.downloads.toLocaleString()}</td>
+                <td class="whitespace-nowrap stats-col-date">${dateStr}</td>
+                <td class="stats-col-assets">${assetsHtml}</td>
+                <td class="stats-col-downloads">${downloadsHtml}</td>
             `;
             els.tableBody.appendChild(tr);
         });
