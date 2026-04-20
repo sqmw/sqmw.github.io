@@ -42,7 +42,12 @@ App.I18N = {
     star_history_title: 'Star 历史',
     star_history_view: '在 star-history.com 查看详情',
     star_history_no_data: '该项目暂无 star 历史数据 (或 star 数过少)',
-    view_stats: '查看 Release 统计'
+    view_stats: '查看 Release 统计',
+    view_guide: '使用文档',
+    view_stats_short: '统计',
+    view_guide_short: '文档',
+    star_count: 'Star 数',
+    star_history_view_short: '趋势'
   },
   en: {
     header_desc: '✨ Welcome to my project portfolio! Browse and search my open source work.',
@@ -75,7 +80,12 @@ App.I18N = {
     star_history_title: 'Star History',
     star_history_view: 'View on star-history.com',
     star_history_no_data: 'No star history data for this repo',
-    view_stats: 'View Release Stats'
+    view_stats: 'View Release Stats',
+    view_guide: 'User Guide',
+    view_stats_short: 'Stats',
+    view_guide_short: 'Guide',
+    star_count: 'Stars',
+    star_history_view_short: 'Trend'
   }
 };
 

@@ -17,10 +17,14 @@ App.main = (() => {
 
     const loadAndRender = async () => {
       try {
-        const result = await App.data.loadRepos();
-        App.store.set({ projects: result.data });
-        App.controller.renderSidebars(result.data);
-        const languages = App.controller.getLanguages(result.data);
+        const [result, appDocs] = await Promise.all([
+          App.data.loadRepos(),
+          App.data.loadAppDocs()
+        ]);
+        const projects = App.data.attachAppDocs(result.data, appDocs);
+        App.store.set({ projects });
+        App.controller.renderSidebars(projects);
+        const languages = App.controller.getLanguages(projects);
         App.ui.renderLanguageFilters(languages, App.store.get().language);
         App.controller.refresh();
       } catch (error) {

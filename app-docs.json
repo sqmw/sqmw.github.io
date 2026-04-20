@@ -1,0 +1,22 @@
+[
+  {
+    "repo": "MFCMouseEffect",
+    "slug": "MFCMouseEffect",
+    "title": "MFCMouseEffect 使用文档",
+    "summary": "跨平台鼠标特效、输入可视化与自动化映射使用指南。",
+    "docPath": "docs/apps/MFCMouseEffect.md",
+    "githubUrl": "https://github.com/sqmw/MFCMouseEffect",
+    "statsUrl": "stats.html?username=sqmw&repository=MFCMouseEffect",
+    "aliases": ["mfc-mouse-effect", "mfc_mouse_effect"]
+  },
+  {
+    "repo": "desk_tidy_sticky",
+    "slug": "desk-tidy-sticky",
+    "title": "Desk Tidy Sticky 使用文档",
+    "summary": "桌面便笺、贴纸、工作台、专注计时与休息提醒使用指南。",
+    "docPath": "docs/apps/desk-tidy-sticky.md",
+    "githubUrl": "https://github.com/sqmw/desk_tidy_sticky",
+    "statsUrl": "stats.html?username=sqmw&repository=desk_tidy_sticky",
+    "aliases": ["desk-tidy-sticky", "desk tidy sticky"]
+  }
+]

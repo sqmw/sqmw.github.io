@@ -107,34 +107,51 @@ App.ui = (() => {
       const updated = App.utils.formatText(App.utils.t('updated_at'), {
         date: proj.updated.toLocaleDateString(locale)
       });
+      const docsLink = proj.appDoc
+        ? `<a href="docs.html?repo=${encodeURIComponent(proj.appDoc.repo)}" class="project-action" title="${App.utils.t('view_guide')}" aria-label="${App.utils.t('view_guide')}">
+            <i class="fas fa-book-open"></i>
+            <span>${App.utils.t('view_guide_short')}</span>
+          </a>`
+        : '';
 
       li.innerHTML = `
         <div class="project-card">
-          <div>
-            <div class="card-header">
-              <a href="${proj.url}" target="_blank" class="project-title">
-                <i class="fas fa-book-bookmark"></i> ${App.utils.escapeHTML(proj.name)}
+          <div class="card-header">
+            <a href="${proj.url}" target="_blank" rel="noopener noreferrer" class="project-title" aria-label="Open ${App.utils.escapeHTML(proj.name)} on GitHub">
+              <i class="fas fa-book-bookmark"></i>
+              <span>${App.utils.escapeHTML(proj.name)}</span>
+              <i class="fas fa-arrow-up-right-from-square project-title-external"></i>
+            </a>
+            <div class="project-actions" aria-label="Project actions">
+              ${docsLink}
+              <a href="stats.html?username=${App.CONFIG.githubUser}&repository=${App.utils.escapeHTML(proj.name)}" class="project-action" title="${App.utils.t('view_stats') || 'View Release Stats'}" aria-label="${App.utils.t('view_stats') || 'View Release Stats'}">
+                <i class="fas fa-chart-simple"></i>
+                <span>${App.utils.t('view_stats_short')}</span>
               </a>
+              <button class="project-action star-history-action" type="button" data-repo="${App.utils.escapeHTML(proj.name)}" title="${App.utils.t('star_history_view')}" aria-label="${App.utils.t('star_history_view')}">
+                <i class="fas fa-chart-line"></i>
+                <span>${App.utils.t('star_history_view_short')}</span>
+              </button>
             </div>
+          </div>
+
+          <div class="project-card-main">
             ${tags}
             <p class="project-desc">${App.utils.escapeHTML(desc)}</p>
           </div>
 
           <div class="card-footer">
-            <div class="project-meta">
+            <div class="project-meta-bar">
               ${proj.language ? `
-              <span class="language-tag">
+              <span class="project-fact language-tag">
                 <span class="lang-color" style="background-color: ${langColor}"></span>
                 ${App.utils.escapeHTML(proj.language)}
               </span>` : ''}
-              <span class="muted">${updated}</span>
-              <a href="stats.html?username=${App.CONFIG.githubUser}&repository=${App.utils.escapeHTML(proj.name)}" class="stats-icon" title="${App.utils.t('view_stats') || 'View Release Stats'}">
-                <i class="fas fa-chart-simple"></i>
-              </a>
-              <span class="star-count clickable" data-repo="${App.utils.escapeHTML(proj.name)}" title="Click to view Star History">
-                <i class="fas fa-star" style="color: var(--accent-warm);"></i> ${proj.stars}
-                <i class="fas fa-chart-line star-action-icon"></i>
-              </span>
+              <div class="project-stars" aria-label="${App.utils.t('star_count')}">
+                <i class="fas fa-star" style="color: var(--accent-warm);"></i>
+                <span>${proj.stars}</span>
+              </div>
+              <span class="project-fact muted">${updated}</span>
             </div>
           </div>
         </div>
@@ -209,7 +226,7 @@ App.ui = (() => {
   };
 
   const bindStarClickEvents = () => {
-    document.querySelectorAll('.star-count.clickable').forEach((el) => {
+    document.querySelectorAll('.star-history-action').forEach((el) => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();

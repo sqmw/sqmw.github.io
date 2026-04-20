@@ -182,10 +182,14 @@ App.controller = (() => {
   const reloadData = async () => {
     App.ui.showLoading();
     try {
-      const result = await App.data.loadRepos();
-      App.store.set({ projects: result.data });
-      App.ui.renderLanguageFilters(getLanguages(result.data), App.store.get().language);
-      renderSidebars(result.data);
+      const [result, appDocs] = await Promise.all([
+        App.data.loadRepos(),
+        App.data.loadAppDocs()
+      ]);
+      const projects = App.data.attachAppDocs(result.data, appDocs);
+      App.store.set({ projects });
+      App.ui.renderLanguageFilters(getLanguages(projects), App.store.get().language);
+      renderSidebars(projects);
       refresh();
     } catch (error) {
       console.error('Reload failed:', error);

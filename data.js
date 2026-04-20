@@ -42,6 +42,35 @@ App.data = (() => {
       }));
   };
 
+  const loadAppDocs = async () => {
+    try {
+      const response = await fetch('app-docs.json', { cache: 'no-cache' });
+      if (!response.ok) return [];
+      const docs = await response.json();
+      return Array.isArray(docs) ? docs : [];
+    } catch (error) {
+      console.warn('Failed to load app docs index', error);
+      return [];
+    }
+  };
+
+  const normalizeDocKey = (value) => String(value || '').toLowerCase().replace(/[-_\s]+/g, '');
+
+  const attachAppDocs = (repos, docs) => {
+    const docMap = new Map();
+
+    docs.forEach((doc) => {
+      [doc.repo, doc.slug, ...(doc.aliases || [])].forEach((key) => {
+        if (key) docMap.set(normalizeDocKey(key), doc);
+      });
+    });
+
+    return repos.map((repo) => ({
+      ...repo,
+      appDoc: docMap.get(normalizeDocKey(repo.name)) || null
+    }));
+  };
+
   const fetchRepos = async () => {
     const response = await fetch(
       `https://api.github.com/users/${githubUser}/repos?sort=updated&per_page=100`
@@ -89,5 +118,5 @@ App.data = (() => {
     }
   };
 
-  return { loadRepos, setCache, getCache, normalizeRepos };
+  return { loadRepos, loadAppDocs, attachAppDocs, setCache, getCache, normalizeRepos };
 })();
